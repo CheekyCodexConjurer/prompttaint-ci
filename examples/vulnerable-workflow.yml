@@ -1,0 +1,30 @@
+name: Vulnerable Auto-Responder
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+  contents: write
+
+jobs:
+  auto-respond:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run AI Agent on Issue Body
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          echo "Processing issue: ${{ github.event.issue.title }}"
+          # VULNERABLE: directly injecting user-controlled issue body into the prompt
+          claude-code --prompt "Analyze this GitHub issue and suggest code changes:\n${{ github.event.issue.body }}"
+
+      - name: Apply Suggested Changes
+        run: |
+          git add .
+          git commit -m "AI-suggested fix for issue #${{ github.event.issue.number }}"
+          git push

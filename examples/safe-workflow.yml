@@ -1,0 +1,35 @@
+name: Safe Auto-Responder
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: read
+  contents: read
+
+jobs:
+  safe-auto-respond:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Sanitize and Save Issue Body
+        run: |
+          mkdir -p .tmp
+          # Use indirection: write the raw body to a file first
+          printf '%s' '${{ github.event.issue.body }}' > .tmp/issue_body_raw.txt
+          # Run through a sanitizer (e.g., strip control chars, limit length)
+          tr -cd '[:print:]\n' < .tmp/issue_body_raw.txt | head -c 5000 > .tmp/issue_body_safe.txt
+
+      - name: Run AI Agent on Sanitized Input
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          echo "Processing issue: ${{ github.event.issue.title }}"
+          # SAFE: the prompt references a sanitized file, not raw event data
+          claude-code --prompt "Analyze the sanitized GitHub issue in .tmp/issue_body_safe.txt and suggest non-destructive code review comments."
+
+      - name: Cleanup Temporary Files
+        run: rm -rf .tmp

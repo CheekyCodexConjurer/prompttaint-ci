@@ -2,89 +2,119 @@
 
 > Stop untrusted GitHub text from becoming agent instructions.
 
-## What it does
+PromptTaint CI finds risky paths where GitHub issues, PRs, comments, commit messages, or branch names can become instructions for coding agents.
 
-PromptTaint CI is a CI guardrail that scans your repository for paths where untrusted GitHub content—like issue titles, PR bodies, comments, and commit messages—can flow into prompts sent to AI agents. It detects risky patterns before Claude, Codex, Copilot, Cursor, Aider, or other agents read that text as instructions.
+## Quick Start
 
-## Why this exists
-
-Modern agentic workflows let AI tools read GitHub events and act on them. An attacker can inject malicious instructions into seemingly benign text fields. If an agent reads an injected issue title or PR description and follows hidden instructions, it could leak secrets, modify code, or perform unauthorized actions. PromptTaint CI exists to find those injection paths before they are exploited.
-
-## What it catches
-
-- Suspicious patterns in strings passed to LLM prompts
-- Variables sourced from GitHub event payloads flowing into agent instructions
-- Indirect prompt injection markers in issue titles, PR bodies, comments, and commit messages
-- Hardcoded API keys or secrets that should not reach prompts
-- Misconfigurations that allow untrusted text to reach high-privilege agent steps
-
-## Install in 60 seconds
-
-```bash
-npm install -g prompttaint
-```
-
-Or run without installing:
+Run it instantly without installing:
 
 ```bash
 npx prompttaint scan
 ```
 
-## CLI usage
+Or install globally:
 
 ```bash
-prompttaint scan --path <repo> --format table|json|markdown --fail-on low|medium|high|critical
+npm install -g prompttaint
 ```
 
-Options:
-- `--path`: path to the repository to scan (defaults to current directory)
-- `--format`: output format
-- `--fail-on`: minimum severity that causes a non-zero exit code
+## GitHub Action
 
-## GitHub Action usage
+Add PromptTaint CI to your workflow to catch risky patterns in CI.
 
 ```yaml
-- uses: CheekyCodexConjurer/prompttaint-ci@v0
-  with:
-    fail-on: medium
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: CheekyCodexConjurer/prompttaint-ci@v0
+        with:
+          fail-on: high
 ```
 
-## Example output
+## Local AI Coding App Setup
 
-```text
-Rule                           Severity   File:Line   Message
-─────────────────────────────────────────────────────────────────────────────
-github-event-to-prompt         medium     src/bot.ts:42   PR body flows into system prompt without sanitization
-indirect-injection-marker      high       lib/parse.ts:15   Detected instruction override sequence in user input
-─────────────────────────────────────────────────────────────────────────────
-2 issues found
+PromptTaint can generate security policies for your local AI coding apps (Cursor, Claude Code, etc.) to instruct them on how to handle untrusted repository content.
+
+```bash
+prompttaint init --apps all
 ```
 
-## Built for
+This creates:
+- `.prompttaint/policy.yml`: Core security policy.
+- `.cursor/rules/prompttaint.mdc`: Cursor-specific rules.
+- `.claude/CLAUDE.md`: Claude Code instructions.
+- `AGENTS.md`: General agent instructions.
 
-Claude Code, Codex, Copilot, Cursor, Aider, and agentic GitHub workflows.
+## Supported Surfaces
 
-## Current status: MVP
+- **Agents**: Claude Code, Codex, Cursor, Antigravity, Aider, Copilot-style agent workflows.
+- **CI/CD**: GitHub Actions workflows.
+- **Docs**: Agent instructions and READMEs.
 
-This is an early, heuristic-based tool. It uses static analysis patterns to flag risks. It will miss some issues and may flag safe code. Use it as an automated first line of defense, not as a complete security audit.
+## What it detects today
+
+- **Taint tracking**: GitHub event fields (issue body, PR title, etc.) flowing into prompt sinks (instruction, message, prompt, etc.).
+- **Dangerous permissions**: Broad write permissions (`contents: write`, `write-all`, etc.) in workflows that handle untrusted text.
+- **Agent keywords**: Presence of known agent tools near tainted data.
+- **Secrets usage**: Workflows that access `secrets.*` while also processing untrusted event data.
+
+## What it does not detect yet
+
+- **Deep data flow**: It does not track data through complex shell scripts or compiled binaries.
+- **Runtime injection**: It is a static analysis tool, not a runtime monitor.
+- **Sophisticated obfuscation**: Attackers may use complex encoding to bypass heuristic patterns.
+
+## Example Vulnerable Workflow
+
+This workflow is risky because it passes an untrusted issue comment directly to an AI agent command while having broad write permissions.
+
+```yaml
+name: Agent Fixer
+on: issue_comment
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npx claude-code "Fix this issue: ${{ github.event.comment.body }}"
+```
+
+## Example Safe Workflow
+
+A safer approach uses indirection or strictly limited permissions.
+
+```yaml
+name: Safe Scanner
+on: push
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm run lint
+```
+
+## Current Status
+
+**MVP / Heuristic Scanner.**
+PromptTaint CI is currently in early development. It uses static analysis patterns to detect risky configurations. It reduces risk by identifying common pitfalls but is not a substitute for a full security audit.
 
 ## Roadmap
 
-- **Scanner accuracy improvements**: more detection rules, fewer false positives
-- **GitHub App**: automated PR checks with inline comments
-- **SaaS dashboard**: centralized monitoring across repositories
-- **Team features**: shared policies, team-managed ignore lists
+- **v0.1.0**: CLI stability, local app support, improved permission detection.
+- **v0.2.0**: Enhanced taint tracking for multi-step workflows.
+- **v1.0.0**: Private repo monitoring, centralized dashboard, and automated PR remediation.
 
-## Future paid model
+## Release Notes
 
-- **Public repos**: free forever
-- **Private repo monitoring**: paid tier
-- **Team dashboards**: paid tier (later)
+- **npm package**: Planned for v0.1.0 release.
+- **GitHub Action**: Use `@v0` only after the official v0.1.0 release. Until then, use a commit SHA or local checkout.
 
-## Disclaimer
+## License
 
-This is a heuristic guardrail, not a complete security product. It detects risky patterns and reduces risk, but does not prevent all prompt injection.
-
----
-
-*Suggested GitHub repo description: "CI guardrail that finds prompt-injection paths in agentic GitHub workflows before Claude, Codex, or Copilot read untrusted text."*
+MIT

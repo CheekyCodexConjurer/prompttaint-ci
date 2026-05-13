@@ -84,7 +84,3 @@ This is an early, heuristic-based tool. It uses static analysis patterns to flag
 ## Disclaimer
 
 This is a heuristic guardrail, not a complete security product. It detects risky patterns and reduces risk, but does not prevent all prompt injection.
-
----
-
-*Suggested GitHub repo description: "CI guardrail that finds prompt-injection paths in agentic GitHub workflows before Claude, Codex, or Copilot read untrusted text."*

@@ -105,7 +105,7 @@ export async function runInit(options: InitOptions): Promise<void> {
 		}
 	}
 
-	if (apps.includes("antigravity")) {
+	if (apps.includes("antigravity") || apps.includes("codex")) {
 		const agentsPath = join(root, "AGENTS.md");
 		if (existsSync(agentsPath)) {
 			console.log("\n[ACTION REQUIRED] AGENTS.md already exists. Please append the following snippet:\n");

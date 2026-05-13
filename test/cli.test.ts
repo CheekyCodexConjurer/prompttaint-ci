@@ -50,6 +50,29 @@ describe("CLI Integration", () => {
 		expect(readFileSync(join(TMP_DIR, "AGENTS.md"), "utf-8")).toBe(existing);
 	});
 
+	it("init --apps codex creates AGENTS.md when missing", () => {
+		execSync(`node dist/cli.js init --path ${TMP_DIR} --apps codex`);
+		expect(existsSync(join(TMP_DIR, "AGENTS.md"))).toBe(true);
+	});
+
+	it("init --apps codex does not overwrite existing AGENTS.md", () => {
+		const existing = "existing agents content";
+		writeFileSync(join(TMP_DIR, "AGENTS.md"), existing);
+		const output = execSync(`node dist/cli.js init --path ${TMP_DIR} --apps codex`).toString();
+		expect(output).toContain("[ACTION REQUIRED] AGENTS.md already exists");
+		expect(readFileSync(join(TMP_DIR, "AGENTS.md"), "utf-8")).toBe(existing);
+	});
+
+	it("init --apps claude creates .claude/CLAUDE.md when missing", () => {
+		execSync(`node dist/cli.js init --path ${TMP_DIR} --apps claude`);
+		expect(existsSync(join(TMP_DIR, ".claude", "CLAUDE.md"))).toBe(true);
+	});
+
+	it("init --apps cursor creates .cursor/rules/prompttaint.mdc", () => {
+		execSync(`node dist/cli.js init --path ${TMP_DIR} --apps cursor`);
+		expect(existsSync(join(TMP_DIR, ".cursor", "rules", "prompttaint.mdc"))).toBe(true);
+	});
+
 	it("scan vulnerable workflow exits 1 with --fail-on high", () => {
 		const workflow = `
 name: Vulnerable

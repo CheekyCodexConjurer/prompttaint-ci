@@ -88,8 +88,11 @@ export async function scanWorkflowFiles(filePath: string): Promise<Finding[]> {
 		fileValues.some((v) => containsAny(v, PROMPT_SINKS, true)) ||
 		fileKeys.some((k) => containsAny(k, PROMPT_SINKS, true));
 	const hasAgentKeyword = fileValues.some((v) => containsAny(v, AGENT_KEYWORDS, true));
-	const hasDangerousPermissions = fileValues.some((v) => DANGEROUS_PERMISSIONS.some((s) => v.includes(s)));
-	const hasWritePermissions = fileValues.some((v) => v.includes("write") || v.includes("contents: write"));
+
+	const hasDangerousPermissions =
+		fileValues.some((v) => DANGEROUS_PERMISSIONS.some((s) => v.includes(s))) ||
+		keyValuePairs.some((p) => DANGEROUS_PERMISSIONS.some((s) => s === `${p.key}: ${p.value}` || s === p.value));
+
 	const hasSecrets = fileValues.some((v) => v.includes("secrets."));
 
 	// Per-occurrence logic
@@ -107,11 +110,12 @@ export async function scanWorkflowFiles(filePath: string): Promise<Finding[]> {
 
 		const keyHasPromptSink = containsAny(key, PROMPT_SINKS, true);
 		const valueHasPromptSink = containsAny(value, PROMPT_SINKS, true);
+		const keyHasAgent = containsAny(key, AGENT_KEYWORDS, true);
 		const valueHasAgent = containsAny(value, AGENT_KEYWORDS, true);
 
 		const ln = lineNumber(content, taintedHit) ?? lineNumber(content, key);
 
-		if (valueHasAgent && (keyHasPromptSink || valueHasPromptSink)) {
+		if ((valueHasAgent || keyHasAgent) && (keyHasPromptSink || valueHasPromptSink)) {
 			if (hasDangerousPermissions) {
 				addFinding({
 					severity: "critical",

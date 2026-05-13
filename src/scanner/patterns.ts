@@ -26,6 +26,7 @@ export const PROMPT_SINKS: string[] = [
 	"claude_args",
 	"codex_args",
 	"agent_args",
+	"run",
 ];
 
 export const AGENT_KEYWORDS: string[] = [
@@ -48,4 +49,9 @@ export const DANGEROUS_PERMISSIONS: string[] = [
 	"issues: write",
 	"actions: write",
 	"id-token: write",
+	"checks: write",
+	"deployments: write",
+	"packages: write",
+	"security-events: write",
+	"write-all",
 ];

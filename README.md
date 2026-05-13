@@ -4,7 +4,25 @@
 
 PromptTaint CI finds risky paths where GitHub issues, PRs, comments, commit messages, or branch names can become instructions for coding agents.
 
+## Pre-release status
+
+**Note:** The `prompttaint` npm package and the `@v0` GitHub Action tag are **not yet published**. They are planned for the upcoming v0.1.0 release. Until then, use the "From source" installation.
+
 ## Quick Start
+
+### From source
+
+Get started in 30 seconds:
+
+```bash
+git clone https://github.com/CheekyCodexConjurer/prompttaint-ci.git
+cd prompttaint-ci
+npm ci
+npm run build
+node dist/cli.js scan --path . --format markdown
+```
+
+### After npm release (Planned for v0.1.0)
 
 Run it instantly without installing:
 
@@ -18,9 +36,9 @@ Or install globally:
 npm install -g prompttaint
 ```
 
-## GitHub Action
+### GitHub Action (Planned for v0.1.0)
 
-Add PromptTaint CI to your workflow to catch risky patterns in CI.
+Add PromptTaint CI to your workflow to catch risky patterns in CI. Use a commit SHA or local checkout until the `@v0` tag is published.
 
 ```yaml
 jobs:

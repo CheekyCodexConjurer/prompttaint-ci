@@ -40,7 +40,7 @@
     "lint": "biome check .",
     "format": "biome format --write .",
     "validate": "npm run lint && npm run typecheck && npm run build && npm run test && npm run scan:self",
-    "validate:release": "npm run validate && npm run pack:dry-run",
+    "validate:release": "npm run validate && npm run pack:dry-run && npm run smoke:packed",
     "pack:dry-run": "npm pack --dry-run",
     "smoke:packed": "node scripts/smoke-packed.mjs",
     "scan:self": "node dist/cli.js scan --path . --format markdown --fail-on high",

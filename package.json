@@ -4,16 +4,45 @@
   "description": "CI guardrail that finds prompt-injection paths in agentic GitHub workflows",
   "type": "module",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "prompttaint": "dist/cli.js"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "action.yml"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CheekyCodexConjurer/prompttaint-ci.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CheekyCodexConjurer/prompttaint-ci/issues"
+  },
+  "homepage": "https://github.com/CheekyCodexConjurer/prompttaint-ci#readme",
+  "keywords": [
+    "prompt-injection",
+    "ai-agents",
+    "codex",
+    "claude-code",
+    "cursor",
+    "github-actions",
+    "security",
+    "static-analysis"
+  ],
   "scripts": {
+    "prepack": "npm run build",
     "build": "tsc",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "format": "biome format --write .",
-    "validate": "npm run lint && npm run typecheck && npm run test && npm run build && npm run scan:self",
+    "validate": "npm run lint && npm run typecheck && npm run build && npm run test && npm run scan:self",
+    "validate:release": "npm run validate && npm run pack:dry-run",
+    "pack:dry-run": "npm pack --dry-run",
+    "smoke:packed": "node scripts/smoke-packed.mjs",
     "scan:self": "node dist/cli.js scan --path . --format markdown --fail-on high",
     "agent:status": "node scripts/agent-status.mjs",
     "agent:commit": "node scripts/agent-safe-commit.mjs"

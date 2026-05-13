@@ -16,7 +16,16 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: cd ${{ github.action_path }} && npm ci && npm run build
+    - run: |
+        cd "${{ github.action_path }}"
+        if [ ! -d "dist" ]; then
+          npm ci && npm run build
+        fi
       shell: bash
-    - run: cd ${{ github.action_path }} && node dist/cli.js scan --path "${{ inputs.path }}" --format "${{ inputs.format }}" --fail-on "${{ inputs.fail-on }}"
+    - run: |
+        SCAN_PATH="${{ inputs.path }}"
+        if [ "$SCAN_PATH" = "." ]; then
+          SCAN_PATH="${{ github.workspace }}"
+        fi
+        node "${{ github.action_path }}/dist/cli.js" scan --path "$SCAN_PATH" --format "${{ inputs.format }}" --fail-on "${{ inputs.fail-on }}"
       shell: bash

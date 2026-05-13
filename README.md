@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npx claude-code "Fix this issue: ${{ github.event.comment.body }}"
+      - run: "npx claude-code 'Fix this issue: ${{ github.event.comment.body }}'"
 ```
 
 ## Example Safe Workflow
@@ -109,6 +109,12 @@ PromptTaint CI is currently in early development. It uses static analysis patter
 - **v0.1.0**: CLI stability, local app support, improved permission detection.
 - **v0.2.0**: Enhanced taint tracking for multi-step workflows.
 - **v1.0.0**: Private repo monitoring, centralized dashboard, and automated PR remediation.
+
+## Future Paid Model
+
+- **Public Repos**: Free forever.
+- **Private Repo Monitoring**: Paid tier for advanced security and compliance.
+- **Team Dashboards**: Centralized monitoring for large organizations.
 
 ## Release Notes
 

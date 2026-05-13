@@ -1,0 +1,22 @@
+name: "PromptTaint CI"
+description: "Scan repository for risky agentic workflow patterns"
+inputs:
+  path:
+    description: "Path to repository"
+    required: false
+    default: "."
+  format:
+    description: "Output format"
+    required: false
+    default: "markdown"
+  fail-on:
+    description: "Minimum severity to fail"
+    required: false
+    default: "high"
+runs:
+  using: "composite"
+  steps:
+    - run: cd ${{ github.action_path }} && npm ci && npm run build
+      shell: bash
+    - run: cd ${{ github.action_path }} && node dist/cli.js scan --path "${{ inputs.path }}" --format "${{ inputs.format }}" --fail-on "${{ inputs.fail-on }}"
+      shell: bash

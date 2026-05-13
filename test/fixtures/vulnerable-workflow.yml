@@ -1,0 +1,25 @@
+name: Auto Fix with Claude
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  agent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Echo permissions
+        run: echo "Permissions include contents: write"
+      - name: Run Claude with issue prompt
+        run: |
+          claude --instructions "${{ github.event.issue.body }}"
+      - name: Run Codex with PR prompt
+        run: |
+          codex --prompt "${{ github.event.pull_request.body }}"

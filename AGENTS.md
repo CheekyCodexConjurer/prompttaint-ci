@@ -1,113 +1,206 @@
 # Agent Protocol: PromptTaint CI
 
+## Scope
+
+These instructions apply to the whole repository. PromptTaint CI is an open-source security-scanner project, so optimize for cautious claims, reproducible validation, small diffs, and no surprise git operations.
+
+## Start-of-task gate
+
+Before meaningful work, inspect:
+
+```sh
+git status --short
+git branch --show-current
+git rev-list --left-right --count origin/master...HEAD || git rev-list --left-right --count origin/main...HEAD
+```
+
+Treat uncommitted changes as user work. Do not stage, commit, push, reset, stash, rebase, merge, revert, switch branches, create worktrees, or discard files unless a human explicitly asks.
+
+## Task execution policy
+
+For non-trivial feature, fix, refactor, config, test, docs, scanner, output-contract, or release work, define objective, scope, non-goals, assumptions, affected files, acceptance criteria, validation, stop condition, and risks before editing.
+
+Prefer the smallest robust change. Do not add speculative features, broad rewrites, unrelated cleanup, formatting churn, new dependencies, or product behavior changes that are not required by the task.
+
 ## Product mission
 
-PromptTaint CI detects paths where attacker-controlled GitHub text can flow into AI agent prompts. It is a static-analysis guardrail for agentic GitHub workflows, not a runtime security monitor.
+PromptTaint CI is an MIT-licensed TypeScript CLI and GitHub Action that detects risky prompt-injection paths in agentic GitHub workflows.
+
+Use cautious language:
+
+- Allowed: "detects risky patterns", "reduces risk", "helps maintainers review agentic workflows".
+- Not allowed: "prevents all prompt injection", "guarantees safety", "fully secures agents".
+
+PromptTaint CI is a static-analysis guardrail, not a runtime security monitor or a substitute for a full security audit.
 
 ## Current architecture
 
-- TypeScript CLI tool
-- GitHub Action wrapper
-- No backend, no database, no auth, no dashboard
+- TypeScript CLI tool.
+- GitHub Action wrapper.
+- Vitest test suite.
+- Biome formatting and linting.
+- No backend, database, auth, dashboard, or cloud service.
 
 ## File map
 
 | Path | Purpose |
-|------|---------|
+| --- | --- |
 | `src/` | TypeScript source code |
-| `src/rules/` | Detection rules |
-| `src/formatters/` | Output formatters (table, json, markdown) |
+| `src/scanner/` | Detection logic, patterns, scanner types |
+| `src/reporter/` | JSON, Markdown, and table output formatters |
+| `src/cli.ts` | CLI parsing, scan/init command flow, exit behavior |
+| `src/init.ts` | Local AI app policy generation |
+| `test/` | Vitest tests and fixtures |
+| `examples/` | Example workflow files |
+| `docs/` | Public and maintainer documentation |
+| `docs/agents/` | Agent routing and operating-system documentation |
+| `.agents/skills/` | Repo-local agent skills |
+| `.github/workflows/` | CI workflows for this repository |
 | `action.yml` | GitHub Action metadata |
-| `.github/workflows/` | CI workflows for this repo |
-| `docs/` | Documentation |
-| `tests/` | Vitest test suite |
+| `scripts/` | Release, package, and agent helper scripts |
+
+## Skill routing
+
+Use these repo-local skills when the trigger applies:
+
+- `task-planning`: non-trivial feature, fix, refactor, config, test, docs, scanner, output, action, or release work. Path: `.agents/skills/task-planning/SKILL.md`.
+- `subagent-orchestration`: non-trivial work needing mapping, implementation, validation, review, checkpoints, or fan-out. Path: `.agents/skills/subagent-orchestration/SKILL.md`.
+- `security-rule-design`: scanner rules, tainted sources, prompt sinks, agent keywords, dangerous permissions, secrets detection, severity, remediation, or heuristics. Path: `.agents/skills/security-rule-design/SKILL.md`.
+- `scanner-fixture-safety`: test fixtures, example workflows, and minimal scanner examples. Path: `.agents/skills/scanner-fixture-safety/SKILL.md`.
+- `output-contract-guard`: JSON, Markdown, table output, finding schema, CLI exit codes, `--fail-on`, or GitHub Action output behavior. Path: `.agents/skills/output-contract-guard/SKILL.md`.
+- `command-guard`: meaningful shell commands, especially build, validation, release, or git commands. Path: `.agents/skills/command-guard/SKILL.md`.
+- `final-safety-guard`: read-only final review after implementation and validation before handoff, commit, or push. Path: `.agents/skills/final-safety-guard/SKILL.md`.
+- `release-guard`: npm package, versioning, GitHub Action tag, release notes, README install instructions, package files, or publishing workflow. Path: `.agents/skills/release-guard/SKILL.md`.
+- `open-source-maintainer`: README, CONTRIBUTING, issue templates, labels, examples, onboarding, and public-facing docs. Path: `.agents/skills/open-source-maintainer/SKILL.md`.
+- `static-structural-search`: syntax-aware search for TypeScript, TSX, or JavaScript patterns when available. Path: `.agents/skills/static-structural-search/SKILL.md`.
+
+## Subagent policy
+
+Subagents are quality tools, not token-saving tools. Use them for non-trivial work when they improve mapping, review depth, validation planning, or risk control.
+
+Use exactly one write-capable implementer in the current working tree. Exploration, review, validation planning, checkpoints, and final guard agents are read-only. Parallel write experiments require explicit human approval and separate worktrees.
+
+See `docs/agents/SUBAGENT_ROUTING.md` for route classes, agent roles, checkpoint triggers, xHigh triggers, prompt examples, and route cards.
+
+## Security rule gate
+
+For scanner rule changes, require:
+
+- vulnerable fixture or test case;
+- safe fixture or test case;
+- expected severity;
+- expected source and sink when applicable;
+- remediation text;
+- false-positive and false-negative reasoning;
+- validation with `npm run test` and, when relevant, `npm run scan:self`.
+
+Do not add broad keyword-only detections without tests and a clear reason. Do not weaken existing detection unless explicitly requested and proven by tests.
+
+## Finding semantics gate
+
+Treat finding semantics as a public contract. Changes to finding IDs, severity mapping, JSON output shape, Markdown/table output, CLI exit code, `--fail-on`, GitHub Action behavior, install instructions, or release instructions require tests and docs updates.
+
+Preserve backward compatibility when practical. If compatibility changes are necessary, document the migration and risk clearly.
+
+## GitHub Action safety gate
+
+For changes to `action.yml` or `.github/workflows/`, verify:
+
+- input defaults and CLI arguments still match;
+- `fail-on` behavior is documented and tested when touched;
+- checkout/build behavior remains deterministic;
+- no secrets, write permissions, publishing, or remote side effects are introduced without explicit approval;
+- the action does not claim a tag works unless that tag is verified.
 
 ## Coding standards
 
-- TypeScript with `strict` mode enabled
-- Biome for formatting and linting
-- Minimal dependencies: only add a dependency if the task is impossible with the standard library
-
-## Testing standards
-
-- Vitest for all tests
-- Tests must be deterministic
-- No network calls in tests; mock all external I/O
-
-## Security language rules
-
-- NEVER claim that PromptTaint CI "prevents all prompt injection"
-- ALWAYS say it "detects risky patterns" and "reduces risk"
-- Use cautious language in user-facing copy and documentation
-
-## Prohibited changes
-
-Do NOT implement or add the following unless explicitly requested by a human:
-
-- Payments, billing, or Stripe integration
-- Backend server or API
-- Dashboard or web UI
-- Authentication or authorization
-- Database
-- Cloud deployment infrastructure
-
-## Worktree protocol
-
-- Do not delete or overwrite user files outside the repository
-- Check `git status` before making changes to understand the current state
-
-## Commit protocol
-
-- NEVER use `git add .` or `git add -A`
-- ALWAYS run `git status --short` before commits
-- Stage ONLY explicit files by name
-- Commit after each completed logical milestone
-- Conventional Commits required
-- Do NOT push to remote without explicit human permission
+- TypeScript with strict mode enabled.
+- Biome for formatting and linting.
+- Minimal dependencies; add a dependency only when the standard library and existing dependencies are insufficient.
+- Deterministic tests only; no network calls in tests.
+- Keep public copy cautious and specific.
 
 ## Validation protocol
 
-- Always run `npm run validate` before committing
-- Do not claim validation passed unless the exact command was run and its output shows success
+Use the narrowest validation that proves the change. For normal code changes, prefer:
+
+```sh
+npm run lint
+npm run typecheck
+npm run test
+npm run scan:self
+```
+
+For broad or release-sensitive changes, run:
+
+```sh
+npm run validate
+```
+
+For docs/config-only agent migrations, also run:
+
+```sh
+git diff --check
+```
+
+Verify every repo-local skill path referenced in this file exists.
+
+Do not claim validation passed unless the exact command ran and returned success. If `npm run scan:self` flags the new docs because of risky example wording, inspect the finding first; do not weaken the scanner to make docs pass.
 
 ## Release protocol
 
-1. Validate: `npm run validate`
-2. Tag with semantic version
-3. Do not release if validation fails
+For npm package, version, GitHub Action tag, release notes, package contents, install docs, or publishing workflow changes:
 
-## Versioning policy
+1. Run `npm run validate:release`.
+2. Verify package metadata and package contents.
+3. Check README consistency.
+4. Check GitHub Action tag consistency.
+5. Do not claim `npx prompttaint scan` or an action tag works unless verified, or clearly mark it as planned.
 
-Semantic Versioning (semver): MAJOR.MINOR.PATCH
+Use semantic versioning: MAJOR.MINOR.PATCH.
 
-## Conventional Commit examples
+## Open-source maintainer policy
 
-- `feat: add new scanner rule for X`
-- `fix: correct severity mapping for Y`
-- `docs: update README with Z`
-- `test: add coverage for W`
-- `chore: update dependencies`
+Optimize for contributor trust:
 
-## Explicit rules
+- keep tasks small and reviewable;
+- document setup and validation clearly;
+- avoid exaggerated security claims;
+- separate scanner behavior, public contract, and release claims;
+- explain residual risk when validation is partial or skipped.
 
-1. **Git rules**
-   - NEVER use `git add .` or `git add -A`
-   - ALWAYS run `git status --short` before commits
-   - Stage ONLY explicit files
-   - Commit after each completed logical milestone
-   - Conventional Commits required
-   - Do NOT push without explicit human permission
+## Prohibited changes
 
-2. **Validation rules**
-   - Always run `npm run validate` before committing
-   - Do not claim validation passed unless exact commands were run and passed
+Do not add these unless a human explicitly requests them:
 
-## Next agent quickstart
+- payments, billing, or Stripe integration;
+- backend server or API;
+- dashboard or web UI;
+- authentication or authorization;
+- database;
+- cloud deployment infrastructure;
+- new product surface outside the TypeScript CLI and GitHub Action.
 
-1. `git status --short`
-2. `npm run validate`
-3. Make changes
-4. `git status --short`
-5. `git add <explicit-files>`
-6. `git diff --cached --name-only`
-7. `git commit -m "type: description"`
+## Commit protocol
+
+Do not commit unless explicitly asked. If a human asks for a commit:
+
+1. Run `git status --short`.
+2. Run required validation, including `npm run validate` unless a narrower command is explicitly justified.
+3. Stage only explicit files by name; never use `git add .` or `git add -A`.
+4. Run `git diff --cached --name-only`.
+5. Use Conventional Commits, for example `docs: update agent operating protocol`.
+6. Do not push without explicit human permission.
+
+## Final report
+
+Report compactly:
+
+- outcome;
+- files changed or created;
+- validation commands and results;
+- subagents used;
+- final guard result when applicable;
+- commits only if explicitly created;
+- residual risks;
+- exact next action.

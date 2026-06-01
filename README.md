@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: CheekyCodexConjurer/prompttaint-ci@<verified-release-tag-or-commit-SHA>
+      - uses: CheekyCodexConjurer/prompttaint-ci@v0.1.0
         with:
           fail-on: high
 ```

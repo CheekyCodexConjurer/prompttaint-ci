@@ -33,7 +33,7 @@ Scan Options:
   --fail-on <sev>    Minimum severity to fail on: low, medium, high, critical (default: "high")
 
 Init Options:
-  --apps <apps>      Comma-separated list of apps: codex,cursor,claude,antigravity,all (default: "all")
+  --apps <apps>      Comma-separated list of apps: codex,cursor,claude,antigravity,serena,opengrapth,all (default: "all")
   --path <dir>       Directory to initialize (default: ".")
 
 Global Options:

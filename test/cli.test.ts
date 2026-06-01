@@ -40,6 +40,9 @@ describe("CLI Integration", () => {
 		expect(existsSync(join(TMP_DIR, ".prompttaint", "policy.yml"))).toBe(true);
 		expect(existsSync(join(TMP_DIR, ".cursor", "rules", "prompttaint.mdc"))).toBe(true);
 		expect(existsSync(join(TMP_DIR, "AGENTS.md"))).toBe(true);
+		expect(existsSync(join(TMP_DIR, ".serena", "project.yml"))).toBe(true);
+		expect(existsSync(join(TMP_DIR, ".serena", "memories", "conventions.md"))).toBe(true);
+		expect(existsSync(join(TMP_DIR, ".opengrapth", "policy.yml"))).toBe(true);
 	});
 
 	it("init does not overwrite AGENTS.md", () => {
@@ -71,6 +74,17 @@ describe("CLI Integration", () => {
 	it("init --apps cursor creates .cursor/rules/prompttaint.mdc", () => {
 		execSync(`node dist/cli.js init --path ${TMP_DIR} --apps cursor`);
 		expect(existsSync(join(TMP_DIR, ".cursor", "rules", "prompttaint.mdc"))).toBe(true);
+	});
+
+	it("init --apps serena creates .serena/project.yml and memories/conventions.md", () => {
+		execSync(`node dist/cli.js init --path ${TMP_DIR} --apps serena`);
+		expect(existsSync(join(TMP_DIR, ".serena", "project.yml"))).toBe(true);
+		expect(existsSync(join(TMP_DIR, ".serena", "memories", "conventions.md"))).toBe(true);
+	});
+
+	it("init --apps opengrapth creates .opengrapth/policy.yml", () => {
+		execSync(`node dist/cli.js init --path ${TMP_DIR} --apps opengrapth`);
+		expect(existsSync(join(TMP_DIR, ".opengrapth", "policy.yml"))).toBe(true);
 	});
 
 	it("scan vulnerable workflow exits 1 with --fail-on high", () => {

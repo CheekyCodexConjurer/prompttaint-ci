@@ -81,6 +81,9 @@ Use these repo-local skills when the trigger applies:
 - `release-guard`: npm package, versioning, GitHub Action tag, release notes, README install instructions, package files, or publishing workflow. Path: `.agents/skills/release-guard/SKILL.md`.
 - `open-source-maintainer`: README, CONTRIBUTING, issue templates, labels, examples, onboarding, and public-facing docs. Path: `.agents/skills/open-source-maintainer/SKILL.md`.
 - `static-structural-search`: syntax-aware search for TypeScript, TSX, or JavaScript patterns when available. Path: `.agents/skills/static-structural-search/SKILL.md`.
+- `serena`: local settings, environment variables, memories, or local conventions for the Serena agent. Path: `.agents/skills/serena/SKILL.md`.
+- `opengrapth`: semantic representation, graph-based code understanding, or dependency tracing rules for the OpenGrapth agent. Path: `.agents/skills/opengrapth/SKILL.md`.
+
 
 ## Subagent policy
 

@@ -16,8 +16,8 @@ PromptTaint CI helps maintainers review agentic workflows and reduces risk by hi
 
 Codex will act as an automated maintainer and co-pilot to help perform routine tasks:
 
-1. **Rule & Heuristics Updates**: Codex can help identify new risky prompt-injection sinks/sources and add corresponding regex/static-analysis patterns.
-2. **Fixture and Regression Test Management**: Codex can automatically write test fixtures (both vulnerable and lower-risk examples) to ensure scanner reliability.
+1. **Rule & Heuristics Updates**: Codex can help identify new risky prompt-injection sinks/sources and add corresponding regex/static-analysis patterns, but a human maintainer reviews rule and severity changes before they are accepted.
+2. **Fixture and Regression Test Management**: Codex can draft test fixtures (both vulnerable and lower-risk examples) for human review to help ensure scanner reliability.
 3. **Documentation Maintenance**: Codex is used to keep documentation (such as `README.md`, `SECURITY.md`, and agent operating protocols) clear, accurate, and aligned.
 4. **Issue Triage**: Codex can help analyze reports (false positives/false negatives) and draft remediation plans or PRs.
 5. **PR Reviews**: Codex can review pull requests to ensure they adhere to strict agent guidelines, keep diffs focused, and do not introduce overclaims.

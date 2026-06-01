@@ -1,18 +1,12 @@
-# Business Model Hypothesis
+# Business Model Status
 
-This document describes a possible future pricing model. It is a hypothesis only and has not been implemented.
+PromptTaint CI does not currently have a paid model, billing system, hosted dashboard, private repo monitoring service, auth service, database, or cloud backend.
 
-## Pricing tiers
+The project is local-first open-source software. Public documentation should not describe pricing tiers or paid monitoring as an active roadmap unless maintainers explicitly approve that product direction later.
 
-| Tier | Price | Includes |
-|------|-------|----------|
-| Free | $0 | Public repositories |
-| Solo | $19/month | 3 private repositories |
-| Team | $39/month | 10 private repositories |
-| Pro | $79/month | 30 private repositories plus reports |
+## Current stance
 
-## Notes
-
-- Pricing and limits are subject to change
-- No billing system is currently in place
-- Do not treat this as a committed product roadmap
+- Keep the CLI and GitHub Action usable without a hosted service.
+- Avoid telemetry by default.
+- Do not require accounts, dashboards, databases, billing, or cloud infrastructure.
+- Treat any future funding or pricing discussion as non-committed unless it is documented in an approved release plan.

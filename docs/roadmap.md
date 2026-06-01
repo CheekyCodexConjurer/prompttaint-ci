@@ -1,35 +1,41 @@
 # Roadmap
 
-## Scanner accuracy
+PromptTaint CI is local-first open-source software. Roadmap items should improve the CLI, GitHub Action, documentation, fixtures, and local agent guardrails without requiring a hosted backend or paid service.
 
-- Add more detection rules for emerging prompt-injection techniques
-- Reduce false positives through improved heuristics
-- Improve severity scoring
+## Scanner precision
 
-## GitHub App
+- Add focused detection rules for risky prompt-injection patterns.
+- Reduce false positives through better context checks.
+- Improve severity calibration and remediation copy.
 
-- Automated PR checks that run on every pull request
-- Inline comments on detected issues
-- Required status check integration
+## Fixtures and tests
 
-## SaaS dashboard
+- Add vulnerable and lower-risk workflow fixtures.
+- Expand regression coverage for `AGENTS.md`, local agent rules, and workflow examples.
+- Keep tests deterministic and network-free.
 
-- Centralized monitoring across multiple repositories
-- Historical trend tracking
-- Alerting and notifications
+## GitHub Action and CLI outputs
 
-## Stripe billing
+- Improve markdown, JSON, and table output clarity.
+- Keep `fail-on` behavior documented and tested.
+- Document verified release tags or commit SHA usage only after validation.
 
-- Payment integration for private repository monitoring
-- Self-serve plan upgrades and downgrades
+## Agent guardrails
 
-## Private repo monitoring
+- Improve generated `AGENTS.md` and local policy templates.
+- Add safer examples for local skills and agent routing files.
+- Keep untrusted GitHub text clearly separated from agent instructions.
 
-- Paid tier for scanning private repositories
-- Continuous monitoring beyond CI runs
+## Optional local MCP
 
-## Enterprise reports
+- Explore a read-only local MCP server for repository review workflows.
+- Keep stdout reserved for protocol messages when using stdio.
+- Do not add telemetry or hosted dependencies by default.
 
-- Compliance-ready audit logs
-- Scheduled security reports
-- Role-based access for team dashboards
+## Not currently in scope
+
+- Hosted dashboards.
+- Private repo monitoring services.
+- Billing or Stripe integration.
+- Auth services, databases, or cloud infrastructure.
+- Telemetry by default.

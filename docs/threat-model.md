@@ -39,4 +39,4 @@ PromptTaint CI uses heuristic detection. It can produce:
 - **False positives**: safe code flagged as risky
 - **False negatives**: real injection paths that the scanner misses
 
-It is not a complete security product. It detects risky patterns and reduces risk, but does not prevent all prompt injection.
+It is not a complete security product. It detects risky patterns and reduces risk, but it does not guarantee safety.

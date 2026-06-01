@@ -22,14 +22,22 @@ For non-trivial feature, fix, refactor, config, test, docs, scanner, output-cont
 
 Prefer the smallest robust change. Do not add speculative features, broad rewrites, unrelated cleanup, formatting churn, new dependencies, or product behavior changes that are not required by the task.
 
+## Context and token budget protocol
+
+Read only the files and sections needed for the task. Prefer exact paths, search results, and short summaries over pasting whole files into prompts or reports.
+
+Avoid reading or summarizing `dist/`, `node_modules/`, lockfiles, generated artifacts, and entire docs folders unless the task specifically depends on them. Use targeted search first, then inspect the smallest relevant file section.
+
+When using subagents, pass bounded questions and concrete file lists. Ask read-only agents for summaries, risks, and validation plans instead of broad repository dumps.
+
 ## Product mission
 
 PromptTaint CI is an MIT-licensed TypeScript CLI and GitHub Action that detects risky prompt-injection paths in agentic GitHub workflows.
 
 Use cautious language:
 
-- Allowed: "detects risky patterns", "reduces risk", "helps maintainers review agentic workflows".
-- Not allowed: "prevents all prompt injection", "guarantees safety", "fully secures agents".
+- Allowed: "detects risky patterns", "reduces risk", "helps maintainers review agentic workflows", "static-analysis guardrail", "heuristic scanner".
+- Not allowed: "prevents all prompt injection", "guarantees safety", "fully secures agents", "stops prompt injection".
 
 PromptTaint CI is a static-analysis guardrail, not a runtime security monitor or a substitute for a full security audit.
 
@@ -95,6 +103,24 @@ For scanner rule changes, require:
 - validation with `npm run test` and, when relevant, `npm run scan:self`.
 
 Do not add broad keyword-only detections without tests and a clear reason. Do not weaken existing detection unless explicitly requested and proven by tests.
+
+## Scanner rule card
+
+Every scanner rule change must declare:
+
+- Rule ID;
+- Risk pattern;
+- Tainted sources;
+- Sinks;
+- Required context;
+- Privilege or secrets escalation;
+- Expected severity;
+- Safe examples;
+- Known false positives;
+- Known false negatives;
+- Fixtures added;
+- Output or schema impact;
+- Validation commands.
 
 ## Finding semantics gate
 
@@ -168,6 +194,31 @@ Optimize for contributor trust:
 - avoid exaggerated security claims;
 - separate scanner behavior, public contract, and release claims;
 - explain residual risk when validation is partial or skipped.
+
+## MCP local-first policy
+
+Any MCP-related work must stay local-first unless a human explicitly approves a broader product direction. Do not add a backend, database, auth service, hosted dashboard, cloud dependency, billing, or telemetry.
+
+Initial MCP tools should be read-only by default. If an MCP server uses stdio, reserve stdout for the protocol and send logs or diagnostics to stderr.
+
+## Public claim glossary
+
+Allowed public claims:
+
+- "detects risky patterns"
+- "reduces risk"
+- "helps maintainers review agentic workflows"
+- "static-analysis guardrail"
+- "heuristic scanner"
+
+Forbidden public claims:
+
+- "prevents all prompt injection"
+- "guarantees safety"
+- "fully secures agents"
+- "stops prompt injection"
+
+When release, npm, or GitHub Action availability is uncertain, state that the path is planned or requires a verified release tag, package version, or commit SHA.
 
 ## Prohibited changes
 

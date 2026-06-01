@@ -1,7 +1,7 @@
 {
   "name": "prompttaint",
   "version": "0.1.0",
-  "description": "CI guardrail that finds prompt-injection paths in agentic GitHub workflows",
+  "description": "Heuristic CI guardrail that detects risky prompt-injection patterns in agentic GitHub workflows",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

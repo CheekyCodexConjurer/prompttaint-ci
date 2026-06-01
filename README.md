@@ -121,6 +121,26 @@ This may create or suggest updates for:
 - `.cursor/rules/prompttaint.mdc`
 - `.claude/CLAUDE.md`
 
+### Use as a Codex skill
+
+If you use Codex or a similar agentic AI coding assistant, you can add PromptTaint CI as a repo-local skill by creating `.agents/skills/prompttaint/SKILL.md`:
+
+````markdown
+---
+name: prompttaint
+description: Run security scanner to detect risky prompt-injection patterns in GitHub workflows.
+---
+
+# PromptTaint Skill
+
+Run PromptTaint CI to verify workflow security before submitting code changes:
+
+`npx prompttaint scan --path . --format markdown --fail-on high`
+```
+````
+
+This instructs the agent to run the static-analysis guardrail automatically whenever workflows or agent rules are modified, preventing the accidental introduction of risky dataflows.
+
 Recommended policy for agentic repositories:
 
 - Treat GitHub event text as untrusted data.

@@ -37,7 +37,7 @@ To ensure repository integrity and avoid supply-chain risks, strict boundaries a
 PromptTaint CI maintains high open-source hygiene through several structured protocols:
 - **`AGENTS.md` and Local Skills**: A formal agent operating protocol that specifies rule-design gates, command guards, and subagent routing rules.
 - **Subagent Routing**: Restricts writing capability to a single worker in the working tree, while using read-only subagents for exploration and safety review.
-- **Private Vulnerability Reporting**: Enabled nativly on GitHub to allow responsible disclosures without public thread leaks.
+- **Private Vulnerability Reporting**: Enabled natively on GitHub to allow responsible disclosures without public thread leaks.
 - **Continuous Integration (CI)**: Automated tests, typechecking, self-scanning, and biome linting run on every push and pull request.
 - **Public Release Policy**: Releases (like `v0.1.0`) are generated only after passing dry-run packages and smoke tests locally.
 

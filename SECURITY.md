@@ -26,8 +26,10 @@ Please do not disclose unpatched vulnerabilities in a public GitHub issue.
 
 Preferred path:
 
-1. Use GitHub private vulnerability reporting for this repository, if it is enabled.
-2. If private reporting is not available, contact the maintainer through the repository owner profile and request a private coordination channel before sharing exploit details.
+Report privately using GitHub Private Vulnerability Reporting at:
+https://github.com/CheekyCodexConjurer/prompttaint-ci/security/advisories/new
+
+If you are unable to use private reporting, contact the maintainer through the repository owner profile and request a private coordination channel before sharing exploit details.
 
 Include, when possible:
 

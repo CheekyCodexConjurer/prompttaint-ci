@@ -1,5 +1,8 @@
 # PromptTaint CI
 
+[![CI](https://github.com/CheekyCodexConjurer/prompttaint-ci/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/CheekyCodexConjurer/prompttaint-ci/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 > Detect risky paths where untrusted GitHub text may reach AI agent prompts.
 
 PromptTaint CI is a local-first, MIT-licensed heuristic static-analysis guardrail for agentic GitHub workflows. It detects risky patterns where GitHub issues, pull requests, comments, commit messages, or branch names may flow into prompts or instructions for coding agents.
@@ -142,6 +145,11 @@ jobs:
 
 **MVP / Heuristic Scanner.**
 PromptTaint CI is currently in early development. It uses static analysis patterns to detect risky configurations. It reduces risk by identifying common pitfalls but is not a substitute for a full security audit.
+
+## Contributing and Security
+
+- Contribution guide: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Security reporting: [SECURITY.md](SECURITY.md)
 
 ## Roadmap
 

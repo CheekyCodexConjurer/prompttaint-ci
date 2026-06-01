@@ -39,7 +39,7 @@ Do not treat this as a verified public install path until the npm release has be
 
 ## GitHub Action
 
-Add PromptTaint CI to a workflow to detect risky patterns in CI. Use a verified release tag or commit SHA; do not assume a moving tag is available until it has been published and tested.
+Add PromptTaint CI to a workflow to detect risky patterns in CI. The current verified release tag is `v0.1.0`. If you prefer immutable pinning, use a verified commit SHA as shown below; do not assume a moving tag is available until it has been published and tested.
 
 ```yaml
 jobs:
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: CheekyCodexConjurer/prompttaint-ci@v0.1.0
+      - uses: CheekyCodexConjurer/prompttaint-ci@5964562ca1e1e14fe01b15f1e173c29e2f045ab9
         with:
           fail-on: high
 ```

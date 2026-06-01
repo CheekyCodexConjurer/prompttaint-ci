@@ -48,6 +48,44 @@ jobs:
           fail-on: high
 ```
 
+## Demo
+
+Scan a repository or workflows directory:
+
+```bash
+# Scan a safe repository (e.g., this repository)
+node dist/cli.js scan --path . --format markdown
+```
+
+Output:
+
+```markdown
+# PromptTaint Scan Results
+
+No findings detected.
+```
+
+Scan a directory containing a vulnerable workflow:
+
+```bash
+# Scan a directory containing risky patterns
+node dist/cli.js scan --path ./risky-repo --format markdown
+```
+
+Example output:
+
+```markdown
+# PromptTaint Scan Results
+
+## PT-001 **CRITICAL**
+- **File:** .github/workflows/vulnerable.yml
+- **Line:** 11
+- **Source:** github.event.comment.body
+- **Sink:** run
+- **Reason:** Tainted source used in prompt sink with agent keyword and dangerous permissions.
+- **Remediation:** Do not pass untrusted GitHub event fields directly to agent prompts. Sanitize or use indirection.
+```
+
 ## Local-first and privacy
 
 PromptTaint CI is designed to run from the repository checkout, an npm package, or a GitHub Action. It does not require a hosted backend, dashboard, database, account, billing system, or cloud service. It does not send telemetry by default.
@@ -150,6 +188,7 @@ PromptTaint CI is currently in early development. It uses static analysis patter
 
 - Contribution guide: [CONTRIBUTING.md](CONTRIBUTING.md)
 - Security reporting: [SECURITY.md](SECURITY.md)
+- Codex maintenance plan: [docs/codex-for-oss.md](docs/codex-for-oss.md)
 
 ## Roadmap
 

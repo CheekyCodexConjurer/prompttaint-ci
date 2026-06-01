@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a Security Vulnerability
+    url: https://github.com/CheekyCodexConjurer/prompttaint-ci/security/advisories/new
+    about: If you want to report a security vulnerability in PromptTaint CI itself, please use GitHub Private Vulnerability Reporting. Do not open public issues for unpatched security bugs.

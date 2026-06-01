@@ -1,0 +1,52 @@
+name: False Negative Report
+description: Report a false negative (risky pattern missed by the scanner)
+title: "[False Negative]: <short description>"
+labels: ["false-negative", "bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a false negative! Help us expand PromptTaint CI's heuristic coverage to detect more risky patterns.
+  - type: textarea
+    id: pattern
+    attributes:
+      label: Risky Pattern Description
+      description: Explain the risky flow where untrusted text may reach agent prompts.
+    validations:
+      required: true
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Minimal Reproducible Workflow
+      description: Paste a minimal workflow YAML example that illustrates the risky pattern.
+      render: yaml
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Untrusted GitHub Source
+      placeholder: e.g., github.event.issue.body
+    validations:
+      required: true
+  - type: input
+    id: sink
+    attributes:
+      label: Prompt Sink
+      placeholder: e.g., npx claude-code prompt instruction
+    validations:
+      required: true
+  - type: textarea
+    id: permissions
+    attributes:
+      label: Relevant Permissions and Secrets
+      description: Does the workflow use write permissions (e.g. contents:write) or access secrets? Please list them.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Scanner Finding
+      description: Explain what finding details, severity, or remediation guidance the scanner should report.
+    validations:
+      required: true

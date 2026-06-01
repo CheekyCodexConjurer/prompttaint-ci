@@ -1,0 +1,37 @@
+name: Documentation & Community Proposal
+description: Propose improvements to docs, onboarding, examples, or community guides
+title: "[Proposal]: <short description>"
+labels: ["documentation", "community"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve PromptTaint CI's documentation and community standards!
+  - type: textarea
+    id: gap
+    attributes:
+      label: Gap or Opportunity
+      description: Describe what is currently missing or could be improved in our documentation, onboarding guides, or community files.
+    validations:
+      required: true
+  - type: input
+    id: audience
+    attributes:
+      label: Target Audience
+      placeholder: e.g., new contributors, workflow maintainers, agent developers
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Solution
+      description: Explain your proposal. What updates or new files should be added?
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation Plan
+      description: How should we verify that these changes are correct and clear?
+    validations:
+      required: true

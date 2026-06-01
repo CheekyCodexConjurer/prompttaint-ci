@@ -1,0 +1,51 @@
+name: False Positive Report
+description: Report a false positive (safe pattern flagged as risky) from the PromptTaint CI scanner
+title: "[False Positive]: <short description>"
+labels: ["false-positive", "bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a false positive! PromptTaint CI is a heuristic static-analysis tool. Your feedback helps us calibrate the scanner to reduce risk while keeping findings actionable.
+  - type: input
+    id: version
+    attributes:
+      label: PromptTaint CI Version or Commit SHA
+      placeholder: e.g., v0.1.0 or commit SHA
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command Run
+      placeholder: e.g., node dist/cli.js scan --path .
+    validations:
+      required: true
+  - type: input
+    id: file_line
+    attributes:
+      label: Affected File and Line Number
+      placeholder: e.g., .github/workflows/deploy.yml:15
+    validations:
+      required: true
+  - type: textarea
+    id: finding
+    attributes:
+      label: Scanner Finding Details
+      description: Copy and paste the scanner output or finding details here.
+    validations:
+      required: true
+  - type: textarea
+    id: explanation
+    attributes:
+      label: Why is this a false positive?
+      description: Explain why the workflow pattern is lower-risk or safe, and does not pose a prompt-injection risk in your context.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: Describe what finding or severity you expected the scanner to report (if any).
+    validations:
+      required: true

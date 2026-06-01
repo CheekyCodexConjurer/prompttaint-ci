@@ -9,6 +9,10 @@ PromptTaint CI is a local-first, MIT-licensed heuristic static-analysis guardrai
 
 It helps maintainers review agentic workflows and reduces risk, but it is not a runtime monitor and is not a substitute for a full security audit.
 
+## Why this matters for Codex and agentic workflows
+
+PromptTaint CI is designed for maintainers adopting Codex and other coding agents in GitHub workflows. It focuses on the boundary where untrusted GitHub event text may become agent instructions, especially in workflows with write permissions, secrets, or automated remediation as an early-stage, local-first heuristic review aid.
+
 ## Quick Start
 
 ### From source

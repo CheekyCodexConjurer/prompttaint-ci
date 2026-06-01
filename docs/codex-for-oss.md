@@ -46,3 +46,7 @@ PromptTaint CI maintains high open-source hygiene through several structured pro
 - **Calibrate Heuristics**: Fine-tune existing scanner rules to reduce noise while maintaining strong pattern matching.
 - **PR Automation**: Develop a GitHub Action workflow template that uses PromptTaint CI to automatically add comments to PRs when risky patterns are detected.
 - **Local Read-only MCP Server**: Explore a read-only Model Context Protocol (MCP) server allowing local agents to query repository structure safely.
+
+## Dogfooding Plan
+
+PromptTaint CI should be run against this repository and selected public repositories controlled by the maintainer before being recommended broadly. Dogfooding targets should include repositories with GitHub Actions, AGENTS.md files, and local agent rules so scanner behavior can be tested on realistic workflows.
